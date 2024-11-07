@@ -8,7 +8,8 @@
 
 ## Установка
 
-Для начала работы с проектом нужно установить все зависимости. Для этого выполните следующую команду:
+1. Клонируйте репозиторий
+   git clone https://github.com/Ye2312/attack-emulator.git
 
-```bash
-pip install -r requirements.txt
+2. Установите сторонние библиотеки
+   pip install -r requirements.txt
