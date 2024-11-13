@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Атаки и защита веб-приложений</title>
+</head>
+<body>
+    <h1>Моделирование атак и защит</h1>
+
+    <!-- Отображение flash-сообщений -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Форма выбора атаки -->
+    <h2>Выберите атаку</h2>
+    <form action="/attack" method="POST">
+        <select name="attack_type">
+            <option value="SQL Injection">SQL Injection</option>
+            <option value="XSS">XSS</option>
+            <option value="Brute Force">Brute Force</option>
+        </select>
+        <button type="submit">Отправить</button>
+    </form>
+
+    <!-- Форма выбора защиты -->
+    <h2>Выберите защиту</h2>
+    <form action="/defense" method="POST">
+        <select name="defense_type">
+            <option value="Prepared Statements">Prepared Statements</option>
+            <option value="Sanitization">Sanitization</option>
+            <option value="Brute Force protection">Brute Force protection</option>
+        </select>
+        <button type="submit">Отправить</button>
+    </form>
+</body>
+</html>
