@@ -9,17 +9,6 @@
 <body class="container">
     <h1 class="mt-5">Моделирование атак и защит</h1>
 
-    <!-- Отображение flash-сообщений -->
-    {% with messages = get_flashed_messages(with_categories=False) %}
-        {% if messages %}
-            <div class="alert alert-info mt-3">
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-
     <!-- Форма выбора атаки -->
     <h2 class="mt-4">Выберите атаку</h2>
     <form action="/attack" method="POST" class="mb-3">
@@ -47,8 +36,3 @@
     </form>
 </body>
 </html>
-<h2 class="mt-4">Демонстрация SQL Injection</h2>
-<ul>
-    <li><a href="/sql_demo" class="btn btn-danger">Уязвимая версия</a></li>
-    <li><a href="/sql_secure_demo" class="btn btn-success">Защищённая версия</a></li>
-</ul>
