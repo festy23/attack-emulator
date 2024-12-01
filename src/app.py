@@ -42,18 +42,18 @@ def attack():
 @app.route('/defense', methods=['POST'])
 def defense():
     defense_type = request.form.get('defense_type')
-    report = ""
+    report = {}
 
     if defense_type == "Prepared Statements":
         report = {
             "title": "Prepared Statements",
-            "description": "Подготовленные запросы защищают от SQL-инъекций.",
+            "description": "Подготовленные выражения защищают от SQL-инъекций.",
             "example": "SELECT * FROM users WHERE username=? AND password=?"
         }
     elif defense_type == "Sanitization":
         report = {
             "title": "Sanitization",
-            "description": "Экранирование пользовательского ввода предотвращает XSS-атаки.",
+            "description": "Очистка пользовательского ввода защищает от XSS-атак.",
             "example": "Пример экранирования: &lt; вместо <"
         }
     elif defense_type == "Rate Limiting":
@@ -66,6 +66,7 @@ def defense():
         flash("Неизвестный тип защиты.")
         return redirect(url_for('home'))
 
+    
     return render_template('defense_report.html', report=report)
 
 if __name__ == '__main__':
