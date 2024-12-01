@@ -69,5 +69,59 @@ def defense():
     
     return render_template('defense_report.html', report=report)
 
+
+#SQL иньекция
+@app.route('/sql_demo', methods=['GET', 'POST'])
+def sql_demo():
+    # Фейковая база данных
+    fake_db = [
+        {"username": "admin", "password": "12345"},
+        {"username": "user", "password": "password"},
+    ]
+
+    result = ""
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Уязвимый SQL-запрос (имитация)
+        query = f"SELECT * FROM users WHERE username='{username}' AND password='{password}'"
+        print(f"Выполняется SQL-запрос: {query}")  # Для отладки
+
+        # Имитация SQL-инъекции
+        for row in fake_db:
+            if row["username"] == username and row["password"] == password:
+                result = f"Добро пожаловать, {username}!"
+                break
+        else:
+            result = "Доступ запрещён!"
+
+    return render_template('sql_demo.html', result=result)
+
+
+#SQL защита
+@app.route('/sql_secure_demo', methods=['GET', 'POST'])
+def sql_secure_demo():
+    fake_db = [
+        {"username": "admin", "password": "12345"},
+        {"username": "user", "password": "password"},
+    ]
+
+    result = ""
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Безопасный подход
+        for row in fake_db:
+            if row["username"] == username and row["password"] == password:
+                result = f"Добро пожаловать, {username}!"
+                break
+        else:
+            result = "Доступ запрещён!"
+
+    return render_template('sql_demo.html', result=result)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
