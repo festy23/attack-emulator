@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+=<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -7,33 +7,31 @@
 </head>
 <body class="container">
     <h1 class="mt-5">Демонстрация DDoS</h1>
-
     {% if active_defense %}
-        <div class="alert alert-success">
-            Активная защита: {{ active_defense }}
-        </div>
+        <div class="alert alert-success">Активная защита: {{ active_defense }}</div>
     {% else %}
-        <div class="alert alert-danger">
-            Внимание! Защита отключена.
-        </div>
+        <div class="alert alert-danger">Внимание! Защита отключена.</div>
     {% endif %}
-
     <p>Эта страница демонстрирует эффект DDoS атаки.</p>
 
-    {% if result %}
-        <div class="alert alert-info mt-3">{{ result }}</div>
+    <div class="mt-3">
+        <p>Счётчик запросов: {{ request_count or 0 }}</p>
+    </div>
+
+    <form method="POST" class="mt-3">
+        <button type="submit" class="btn btn-primary">Симулировать запрос</button>
+    </form>
+
+    {% if request_count > 5 and active_defense == "DDoS Protection" %}
+        <div class="alert alert-warning mt-3">
+            Защита сработала! DDoS атака заблокирована.
+        </div>
+    {% elif request_count > 10 %}
+        <div class="alert alert-warning mt-3">
+            Сервер перегружен: DDoS атака удалась!
+        </div>
     {% endif %}
 
-    {% if show_attack_report %}
-        <a href="/attack_report?attack_type=DDoS&query=Множественные запросы к одному ресурсу" 
-           class="btn btn-warning mt-3">Посмотреть отчёт об атаке</a>
-    {% endif %}
-
-    {% if show_defense_report %}
-        <a href="/defense_report?defense_type=Rate Limiting" 
-           class="btn btn-success mt-3">Посмотреть отчёт о защите</a>
-    {% endif %}
-
-    <a href="/" class="btn btn-primary mt-3">Вернуться на главную</a>
+    <a href="/" class="btn btn-secondary mt-3">Вернуться на главную</a>
 </body>
 </html>

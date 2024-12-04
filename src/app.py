@@ -6,6 +6,7 @@ app.secret_key = 'your_secret_key2312'
 # Главная страница
 @app.route('/')
 def home():
+    session['request_count'] = 0
     
     return render_template('index.html')
 
@@ -30,7 +31,7 @@ def attack():
 # Выполнение защиты
 @app.route('/defense', methods=['POST'])
 def defense():
-    action = request.form.get('action')
+    action = request.form.get('action')  # Узнаем, что пользователь хочет сделать
     if action == "enable":
         defense_type = request.form.get('defense_type')
         if defense_type == "Prepared Statements":
@@ -39,10 +40,9 @@ def defense():
         elif defense_type == "XSS Protection":
             session['active_defense'] = "XSS Protection"
             flash("Защита 'XSS Protection' включена!")
-        elif defense_type == "Rate Limiting":
-            session['active_defense'] = "Rate Limiting"
-            session['request_count'] = 0  # Сбросить счётчик запросов
-            flash("Защита 'Rate Limiting' включена!")
+        elif defense_type == "DDoS Protection":
+            session['active_defense'] = "DDoS Protection"
+            flash("Защита 'DDoS Protection' включена!")
         else:
             flash("Выбранная защита пока не реализована.")
     elif action == "disable":
@@ -257,34 +257,29 @@ def xss_demo():
         show_defense_report=show_defense_report
     )
 
+
+#DDos
 @app.route('/ddos_demo', methods=['GET', 'POST'])
 def ddos_demo():
-    # Инициализация переменных
-    result = ""
-    show_attack_report = False
-    show_defense_report = False
+    # Инициализация счетчика запросов в сессии
+    if 'request_count' not in session:
+        session['request_count'] = 0
+
     active_defense = session.get('active_defense', None)
 
     if request.method == 'POST':
-        if active_defense == "Rate Limiting":
-            result = "DDoS атака заблокирована!"
-            show_defense_report = True
-        else:
-            result = "Сервер перегружен: DDoS атака удалась!"
-            show_attack_report = True
+        session['request_count'] += 1
+        
+        # Проверяем активную защиту
+        if active_defense == "DDoS Protection":
+            if session['request_count'] > 5:  # Лимит запросов
+                flash("DDoS атака заблокирована!", "danger")
+                return render_template('ddos_demo.html', active_defense=active_defense, request_count=session['request_count'])
+        elif session['request_count'] > 10:  # Если защиты нет, больше запросов
+            flash("Сервер перегружен: DDoS атака удалась!", "warning")
+            return render_template('ddos_demo.html', active_defense=active_defense, request_count=session['request_count'])
 
-    # Убедитесь, что шаблон 'ddos_demo.html' существует
-    return render_template(
-        'ddos_demo.html',
-        result=result,
-        active_defense=active_defense,
-        show_attack_report=show_attack_report,
-        show_defense_report=show_defense_report
-    )
-    
-
-
-
+    return render_template('ddos_demo.html', active_defense=active_defense, request_count=session['request_count'])
 
 
 
