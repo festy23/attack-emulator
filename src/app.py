@@ -194,6 +194,8 @@ def xss_demo():
 def ddos_demo():
     global request_count
     active_defense = session.get('active_defense')  # Получаем состояние защиты
+    show_attack_report = False
+    show_defense_report = False
 
     if request.method == 'POST':
         request_count += 1  # Увеличиваем счётчик запросов
@@ -202,16 +204,21 @@ def ddos_demo():
     if active_defense == "DDoS Protection":
         if request_count >= 10:
             attack_successful = False  # Защита блокирует атаку
+            show_defense_report = True
         else:
-            attack_successful = None  # Атака не достигла лимита запросов
+            attack_successful = None  # Атака ещё не достигла лимита запросов
     else:
         attack_successful = True if request_count >= 10 else None  # Если защита отключена
+        if attack_successful:
+            show_attack_report = True
 
     return render_template(
         'ddos_demo.html',
         request_count=request_count,
         active_defense=active_defense,
-        attack_successful=attack_successful
+        attack_successful=attack_successful,
+        show_attack_report=show_attack_report,
+        show_defense_report=show_defense_report
     )
 
 if __name__ == '__main__':
