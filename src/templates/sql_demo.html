@@ -62,13 +62,14 @@
     {% endif %}
 
     {% if show_attack_report %}
-         <a href="/attack_report" class="btn btn-warning mt-3">Посмотреть отчет об атаке</a>
+    <a href="{{ url_for('attack_report', attack_type='SQL Injection', query=query) }}" 
+       class="btn btn-warning mt-3">Посмотреть отчёт об атаке</a>
     {% endif %}
-
+    
     {% if show_defense_report %}
-         <a href="/defense_report" class="btn btn-success mt-3">Посмотреть отчет о защите</a>
+    <a href="{{ url_for('defense_report', defense_type='Prepared Statements', query=query) }}" 
+       class="btn btn-success mt-3">Посмотреть отчёт о защите</a>
     {% endif %}
-
     <a href="/" class="btn btn-primary mt-3">Вернуться на главную</a>
 </body>
 </html>

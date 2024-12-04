@@ -2,14 +2,26 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Отчёт о защите</title>
+    <title>{{ report.title }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="container">
     <h1 class="mt-5">{{ report.title }}</h1>
     <p class="mt-3">{{ report.description }}</p>
+
+    <h3 class="mt-4">Пример:</h3>
     <pre class="bg-light p-3">{{ report.example }}</pre>
-    <a href="/" class="btn btn-success mt-3">Вернуться на главную</a>
+
+    <h3 class="mt-4">Последствия:</h3>
+    <p>{{ report.impact }}</p>
+
+    <h3 class="mt-4">Как это работает:</h3>
+    <ul>
+        {% for item in report.how_it_works %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="/" class="btn btn-primary mt-3">Вернуться на главную</a>
 </body>
 </html>

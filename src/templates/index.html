@@ -24,15 +24,14 @@
 
     <!-- Форма выбора защиты -->
     <h2 class="mt-4">Выберите защиту</h2>
-    <form action="/defense" method="POST" class="mb-3">
-        <div class="mb-3">
-            <select name="defense_type" class="form-select">
-               <option value="Prepared Statements">Prepared Statements</option>
-           </select>
-       </div>
-       <button type="submit" name="action" value="enable" class="btn btn-success">Включить защиту</button>
-       <button type="submit" name="action" value="disable" class="btn btn-danger">Отключить защиту</button>
-   </form>
+    <form action="/defense" method="POST">
+    <select name="defense_type" class="form-select">
+        <option value="Prepared Statements">Prepared Statements</option>
+        <option value="XSS Protection">XSS Protection</option>
+    </select>
+    <button type="submit" name="action" value="enable" class="btn btn-success mt-3">Включить защиту</button>
+    <button type="submit" name="action" value="disable" class="btn btn-danger mt-3">Отключить защиту</button>
+</form>
 </body>
 </html>
 
