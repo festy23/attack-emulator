@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key2312'
-
+active_defense = None  # Переменная для отслеживания включенной защиты
+request_count = 0
 # Главная страница
 @app.route('/')
-def home():
-    session['request_count'] = 0
-    
+def home(): 
+    global request_count
+    request_count=0 
     return render_template('index.html')
 
 # Выполнение атаки
@@ -31,24 +32,25 @@ def attack():
 # Выполнение защиты
 @app.route('/defense', methods=['POST'])
 def defense():
-    action = request.form.get('action')  # Узнаем, что пользователь хочет сделать
+    action = request.form.get('action')  # Узнаём, что нужно сделать
+    defense_type = request.form.get('defense_type')  # Тип защиты
+
     if action == "enable":
-        defense_type = request.form.get('defense_type')
-        if defense_type == "Prepared Statements":
-            session['active_defense'] = "Prepared Statements"
-            flash("Защита 'Prepared Statements' включена!")
+        session['active_defense'] = defense_type
+        flash(f"Защита '{defense_type}' включена!", "success")
+        # Перенаправляем в зависимости от типа защиты
+        if defense_type == "DDoS Protection":
+            return redirect('/')
+        elif defense_type == "Prepared Statements":
+            return redirect('/')
         elif defense_type == "XSS Protection":
-            session['active_defense'] = "XSS Protection"
-            flash("Защита 'XSS Protection' включена!")
-        elif defense_type == "DDoS Protection":
-            session['active_defense'] = "DDoS Protection"
-            flash("Защита 'DDoS Protection' включена!")
-        else:
-            flash("Выбранная защита пока не реализована.")
+            return redirect('/')
     elif action == "disable":
         session['active_defense'] = None
-        flash("Защита отключена.")
-    return redirect(url_for('home'))
+        flash("Защита отключена.", "danger")
+        return redirect('/')
+
+    return redirect('/')
 
 
 #SQL иньекция
@@ -112,117 +114,46 @@ def sql_demo():
         show_defense_report=show_defense_report
     )
     
-@app.route('/attack_report')
+@app.route('/attack_report', methods=['GET'])
 def attack_report():
-    # Получаем тип атаки из параметров URL
     attack_type = request.args.get('attack_type', 'Unknown')
-    query = request.args.get('query', 'Запрос не выполнялся.')
-
-    # Конфигурация данных для каждой атаки
-    attack_details = {
-        "SQL Injection": {
-        
-            "description": "Эта атака позволяет злоумышленнику манипулировать SQL-запросами для получения несанкционированного доступа к данным.",
-            "impact": "Атакующий смог получить доступ к конфиденциальным данным.",
-            "prevention": [
-                "Используйте подготовленные выражения (Prepared Statements).",
-                "Экранируйте пользовательский ввод.",
-                "Используйте ORM-библиотеки для работы с базой данных.",
-            ]
+    report = {
+        "title": f"Отчёт об атаке: {attack_type}",
+        "description": f"Атака типа {attack_type} имеет уникальный характер воздействия на систему.",
+        "impact": "Возможные последствия зависят от типа атаки. Например, сервер может стать недоступным (для DDoS), данные могут быть скомпрометированы (для SQL Injection) или нарушена работа интерфейса (для XSS).",
+        "details": {
+            "Тип атаки": attack_type,
+            "Количество запросов (только для DDoS)": request_count if attack_type == "DDoS" else "Не применимо",
+            "Результат": "Успех" if (attack_type == "DDoS" and request_count >= 10) else "Заблокирована"
         },
-        "XSS": {
-           
-            "description": "Cross-Site Scripting позволяет злоумышленникам внедрять вредоносные скрипты в веб-страницы.",
-            "impact": "Атакующий смог выполнить вредоносный скрипт, который похитил пользовательские данные.",
-            "prevention": [
-                "Экранируйте пользовательский ввод.",
-                "Используйте Content Security Policy (CSP).",
-                "Избегайте прямого отображения непроверенных данных.",
-            ]
-        },
-        "DDoS": {
-            "title": "DDoS Attack",
-             "description": "Эта атака перегружает сервер, отправляя множество запросов за короткий промежуток времени.",
-            "example": "Отправка 1000 запросов за 1 секунду к одному ресурсу.",
-            "impact": "Сервер перестаёт отвечать из-за перегрузки.",
-            "how_it_works": [
-             "Отправка большого количества запросов с одного или нескольких IP-адресов.",
-            "Использование ботов для имитации легитимного трафика.",
-            "Направление запросов на сервер, чтобы исчерпать его ресурсы."
-             ]
-        } 
+        "prevention": {
+            "DDoS": ["Используйте защиту от DDoS", "Ограничьте количество запросов в секунду", "Фильтрация IP-адресов"],
+            "SQL Injection": ["Используйте подготовленные выражения (Prepared Statements)", "Проверяйте пользовательский ввод"],
+            "XSS": ["Включите защиту от XSS", "Экранируйте пользовательский ввод", "Используйте Content Security Policy (CSP)"]
+        }.get(attack_type, ["Общие рекомендации по безопасности"])
     }
-
-    # Получаем данные для отчёта или создаём пустой отчёт
-    report = attack_details.get(attack_type, {
-        "description": "Нет данных по данной атаке.",
-        "impact": "Неизвестно.",
-        "prevention": []
-    })
-
-    report["title"] = f"Отчёт об атаке: {attack_type}"
-    report["query"] = query
-    print("Attack type:", attack_type)
-    print("Query executed:", query) 
-
     return render_template('attack_report.html', report=report)
 
-@app.route('/defense_report')
+
+@app.route('/defense_report', methods=['GET'])
 def defense_report():
     defense_type = request.args.get('defense_type', 'Unknown')
-    
-    # Логируем для проверки
-    print("Defense Type:", defense_type)
-
-    # Конфигурация отчёта для защиты
-    defense_details = {
-        "Prepared Statements": {
-            "title": "Отчёт о защите: Prepared statements",
-            "description": "Prepared Statements предотвращают SQL-инъекции.",
-            "example": "SELECT * FROM users WHERE username=? AND password=?",
-            "impact": "SQL-инъекции предотвращены.",
-            "how_it_works": [
-                "Используются параметры вместо прямого ввода.",
-                "Запросы параметризованы и экранированы."
-            ],
-            "defense_type": "Prepared Statements"
-        },
-        "XSS Protection": {
-            "title": "Отчёт о защите: XSS Protection",
-            "description": "Экранирование пользовательского ввода и использование Content Security Policy защищают от XSS-атак.",
-            "example": "&lt;script&gt;alert('XSS')&lt;/script&gt;",
-            "impact": "Вредоносные скрипты не были выполнены в браузере жертвы.",
-            "how_it_works": [
-                "Экранирование HTML-тегов и специальных символов.",
-                "Content Security Policy предотвращает выполнение внешних скриптов."
-            ],
-            "defense_type": "XSS Protection"
-        },
-        "Rate Limiting": {
-        "title": "Защита от DDoS: Rate Limiting",
-        "description": "Ограничение частоты запросов от одного клиента для защиты от DDoS-атак.",
-        "example": "Максимум 5 запросов в секунду от одного IP-адреса.",
-        "impact": "Сервер продолжает работать, блокируя избыточные запросы.",
-        "how_it_works": [
-            "Отслеживание количества запросов от каждого клиента за определённое время.",
-            "Блокировка запросов, превышающих установленный лимит.",
-            "Использование алгоритмов, таких как Token Bucket или Leaky Bucket."
-        ]
+    report = {
+        "title": f"Отчёт о защите: {defense_type}",
+        "description": f"Механизм защиты {defense_type} обеспечивает защиту от определённых типов атак.",
+        "example": {
+            "DDoS Protection": "Фильтрация запросов на основе частоты.",
+            "Prepared Statements": "Безопасное выполнение SQL-запросов.",
+            "XSS Protection": "Экранирование пользовательских данных."
+        }.get(defense_type, "Пример не предоставлен."),
+        "impact": f"Активная защита {defense_type} может существенно снизить риск успешной атаки.",
+        "how_it_works": {
+            "DDoS Protection": ["Ограничение запросов", "Анализ трафика", "Блокировка IP-адресов"],
+            "Prepared Statements": ["Экранирование данных", "Использование параметризованных запросов"],
+            "XSS Protection": ["Фильтрация данных", "Установка CSP"]
+        }.get(defense_type, ["Описание отсутствует."])
     }
-    }
-
-    # Выбираем данные для отчёта
-    report = defense_details.get(defense_type, {
-        "description": "Нет данных по данной защите.",
-        "example": "Неизвестно.",
-        "impact": "Неизвестно.",
-        "how_it_works": [],
-        "defense_type": "Unknown"
-    })
-
-    print("Report data:", report)  # Лог данных для проверки
     return render_template('defense_report.html', report=report)
-
 
 #XSS attack
 @app.route('/xss_demo', methods=['GET', 'POST'])
@@ -261,29 +192,27 @@ def xss_demo():
 #DDos
 @app.route('/ddos_demo', methods=['GET', 'POST'])
 def ddos_demo():
-    # Инициализация счетчика запросов в сессии
-    if 'request_count' not in session:
-        session['request_count'] = 0
-
-    active_defense = session.get('active_defense', None)
+    global request_count
+    active_defense = session.get('active_defense')  # Получаем состояние защиты
 
     if request.method == 'POST':
-        session['request_count'] += 1
-        
-        # Проверяем активную защиту
-        if active_defense == "DDoS Protection":
-            if session['request_count'] > 5:  # Лимит запросов
-                flash("DDoS атака заблокирована!", "danger")
-                return render_template('ddos_demo.html', active_defense=active_defense, request_count=session['request_count'])
-        elif session['request_count'] > 10:  # Если защиты нет, больше запросов
-            flash("Сервер перегружен: DDoS атака удалась!", "warning")
-            return render_template('ddos_demo.html', active_defense=active_defense, request_count=session['request_count'])
+        request_count += 1  # Увеличиваем счётчик запросов
 
-    return render_template('ddos_demo.html', active_defense=active_defense, request_count=session['request_count'])
+    # Проверка успешности атаки
+    if active_defense == "DDoS Protection":
+        if request_count >= 10:
+            attack_successful = False  # Защита блокирует атаку
+        else:
+            attack_successful = None  # Атака не достигла лимита запросов
+    else:
+        attack_successful = True if request_count >= 10 else None  # Если защита отключена
 
-
-
-
+    return render_template(
+        'ddos_demo.html',
+        request_count=request_count,
+        active_defense=active_defense,
+        attack_successful=attack_successful
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)

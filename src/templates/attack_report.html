@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -8,16 +9,24 @@
 <body class="container">
     <h1>{{ report.title }}</h1>
     <p>{{ report.description }}</p>
-    <h3>Выполненный запрос:</h3>
-    <pre>{{ report.query }}</pre>
-    <h3>Последствия:</h3>
+
+    <h2>Последствия</h2>
     <p>{{ report.impact }}</p>
-    <h3>Как защититься:</h3>
+
+    <h2>Детали</h2>
+    <ul>
+        {% for key, value in report.details.items() %}
+            <li><strong>{{ key }}:</strong> {{ value }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Как защититься</h2>
     <ul>
         {% for item in report.prevention %}
             <li>{{ item }}</li>
         {% endfor %}
     </ul>
+
     <a href="/" class="btn btn-primary mt-3">Вернуться на главную</a>
 </body>
 </html>
