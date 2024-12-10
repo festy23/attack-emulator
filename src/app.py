@@ -144,10 +144,10 @@ def attack_report():
         "how_it_works": {
             "DDoS": ["Генерация огромного числа запросов", "Перегрузка серверных ресурсов", "Блокировка доступа к ресурсу"],
             "SQL Injection": ["Использование неэкранированных данных", "Внедрение вредоносных запросов в SQL"],
-            "XSS": ["Внедрение скриптов через пользовательский ввод", "Выполнение кода в браузере пользователя"]
+            "XSS": ["Фильтрация данных", "Экранирование пользовательских данных"]
         }.get(attack_type, ["Описание отсутствует."]),
     }
-    return render_template('attack_report.html', report=report)  
+    return render_template('attack_report.html', report=report) 
 
 
 @app.route('/defense_report', methods=['GET'])
