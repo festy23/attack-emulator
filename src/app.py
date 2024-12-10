@@ -4,6 +4,8 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key2312'
 active_defense = None  # Переменная для отслеживания включенной защиты
 request_count = 0
+app.jinja_env.globals.update(enumerate=enumerate)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 # Главная страница
 @app.route('/')
 def home(): 
@@ -39,11 +41,11 @@ def defense():
         session['active_defense'] = defense_type
         flash(f"Защита '{defense_type}' включена!", "success")
         # Перенаправляем в зависимости от типа защиты
-        if defense_type == "DDoS Protection":
+        if defense_type == "Rate limiting":
             return redirect('/')
         elif defense_type == "Prepared Statements":
             return redirect('/')
-        elif defense_type == "XSS Protection":
+        elif defense_type == "Input Data Filtering":
             return redirect('/')
     elif action == "disable":
         session['active_defense'] = None
@@ -58,10 +60,19 @@ def defense():
 def sql_demo():
     # Фейковая база данных
     fake_db = [
-        {"username": "admin", "password": "12345"},
-        {"username": "user", "password": "password"},
-        {"username": "artur", "password": "qwerty"},
-    ]
+             {"username": "admin", "password": "P@ssw0rd123", "role": "Administrator", "email": "admin@example.com"},
+             {"username": "user1", "password": "mypassword1", "role": "User", "email": "user1@example.com"},
+             {"username": "hacker", "password": "hacktheplanet", "role": "User", "email": "hacker@anonymous.com"},
+             {"username": "alice", "password": "alice_in_wonderland", "role": "User", "email": "alice@example.com"},
+             {"username": "bob", "password": "bob_secure_pass", "role": "Moderator", "email": "bob@example.com"},
+             {"username": "root", "password": "toor", "role": "Superuser", "email": "root@localhost"},
+             {"username": "guest", "password": "guest123", "role": "Guest", "email": "guest@example.com"},
+             {"username": "test_user", "password": "test1234", "role": "Tester", "email": "test_user@example.com"},
+             {"username": "admin2", "password": "Adm1n$$2023", "role": "Administrator", "email": "admin2@example.com"},
+             {"username": "john", "password": "johns_password", "role": "User", "email": "john@example.com"},
+             {"username": "eve", "password": "eve_12345", "role": "Guest", "email": "eve@secure.com"},
+             {"username": "developer", "password": "dev@123", "role": "Developer", "email": "dev@example.com"},
+]
 
     # Инициализация переменных
     result = ""
@@ -113,26 +124,30 @@ def sql_demo():
         show_attack_report=show_attack_report,
         show_defense_report=show_defense_report
     )
-    
+
 @app.route('/attack_report', methods=['GET'])
 def attack_report():
     attack_type = request.args.get('attack_type', 'Unknown')
     report = {
         "title": f"Отчёт об атаке: {attack_type}",
         "description": f"Атака типа {attack_type} имеет уникальный характер воздействия на систему.",
-        "impact": "Возможные последствия зависят от типа атаки. Например, сервер может стать недоступным (для DDoS), данные могут быть скомпрометированы (для SQL Injection) или нарушена работа интерфейса (для XSS).",
-        "details": {
-            "Тип атаки": attack_type,
-            "Количество запросов (только для DDoS)": request_count if attack_type == "DDoS" else "Не применимо",
-            "Результат": "Успех" if (attack_type == "DDoS" and request_count >= 10) else "Заблокирована"
-        },
-        "prevention": {
-            "DDoS": ["Используйте защиту от DDoS", "Ограничьте количество запросов в секунду", "Фильтрация IP-адресов"],
-            "SQL Injection": ["Используйте подготовленные выражения (Prepared Statements)", "Проверяйте пользовательский ввод"],
-            "XSS": ["Включите защиту от XSS", "Экранируйте пользовательский ввод", "Используйте Content Security Policy (CSP)"]
-        }.get(attack_type, ["Общие рекомендации по безопасности"])
+        "example": {
+            "DDoS": "Перегрузка сервера за счёт большого числа запросов.",
+            "SQL Injection": "Выполнение вредоносных SQL-запросов через вводимые данные.",
+            "XSS": "Внедрение JavaScript-кода, выполняемого в браузере пользователя."
+        }.get(attack_type, "Пример не предоставлен."),
+        "impact": {
+            "DDoS": "Сервер становится недоступным для пользователей.",
+            "SQL Injection": "Компрометация данных и нарушение работы базы данных.",
+            "XSS": "Кража данных пользователей или подмена интерфейса."
+        }.get(attack_type, "Описание последствий отсутствует."),
+        "how_it_works": {
+            "DDoS": ["Генерация огромного числа запросов", "Перегрузка серверных ресурсов", "Блокировка доступа к ресурсу"],
+            "SQL Injection": ["Использование неэкранированных данных", "Внедрение вредоносных запросов в SQL"],
+            "XSS": ["Внедрение скриптов через пользовательский ввод", "Выполнение кода в браузере пользователя"]
+        }.get(attack_type, ["Описание отсутствует."]),
     }
-    return render_template('attack_report.html', report=report)
+    return render_template('attack_report.html', report=report)  
 
 
 @app.route('/defense_report', methods=['GET'])
@@ -142,9 +157,9 @@ def defense_report():
         "title": f"Отчёт о защите: {defense_type}",
         "description": f"Механизм защиты {defense_type} обеспечивает защиту от определённых типов атак.",
         "example": {
-            "DDoS Protection": "Фильтрация запросов на основе частоты.",
+            "Rate Limiting": "Ограничение кол-ва запросов на основе частоты.",
             "Prepared Statements": "Безопасное выполнение SQL-запросов.",
-            "XSS Protection": "Экранирование пользовательских данных."
+            "Input Data Filtering": "Экранирование пользовательских данных."
         }.get(defense_type, "Пример не предоставлен."),
         "impact": f"Активная защита {defense_type} может существенно снизить риск успешной атаки.",
         "how_it_works": {
@@ -220,6 +235,61 @@ def ddos_demo():
         show_attack_report=show_attack_report,
         show_defense_report=show_defense_report
     )
+
+
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    questions = [
+        
+    {
+        "question": "Что является основным последствием DDoS-атаки?",
+        "options": ["Кража данных", "Перегрузка сервера", "Изменение интерфейса"],
+        "answer": "Перегрузка сервера",
+        "explanation": "Основной целью DDoS-атаки является перегрузка сервера для нарушения его работы."
+    },
+    {
+        "question": "Какой метод защиты используется против SQL Injection?",
+        "options": ["Фильтрация IP-адресов", "Prepared Statements", "Ограничение запросов"],
+        "answer": "Prepared Statements",
+        "explanation": "Prepared Statements - подготовленные шаблоны запросов защищают базы данных, предотвращая выполнение вредоносных SQL-запросов."
+    },
+    {
+        "question": "Как работает защита от XSS?",
+        "options":["Input Data Filtering", "Фильтрация трафика", "Блокировка IP-адресов"],
+        "answer": "Input Data Filtering",
+        "explanation": "Input Data Filtering - экранирование данных предотвращает выполнение вредоносных скриптов, внедрённых пользователем."
+    },
+    {
+        "question": "Сколько запросов требовалось для успешной DDoS-атаки (без защиты)?",
+        "options": ["5", "10", "20"],
+        "answer": "10",
+        "explanation": "Без защиты сервер может быть перегружен, если количество запросов превышает лимит, в данном случае — 10."
+    },
+    {
+        "question": "Какой метод используется для ограничения количества запросов на сервер?",
+        "options": ["Content Security Policy", "Rate Limiting", "SQL Prepared Statements"],
+        "answer": "Rate Limiting",
+        "explanation": "Rate Limiting - ограничивает частоту запросов, предотвращая перегрузку сервера."
+    }
+]
+        
+    user_answers={}
+    score= None
+
+    if request.method == 'POST':
+        user_answers = request.form  # Получаем ответы пользователя
+        score = 0
+
+        # Проверяем ответы
+        for i, question in enumerate(questions):
+            if user_answers.get(f"q{i}") == question["answer"]:
+                score += 1
+
+        
+
+    return render_template('test.html', questions=questions,user_answers=user_answers,score=score)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -48,6 +48,8 @@
                 <tr>
                     <th>Имя пользователя</th>
                     <th>Пароль</th>
+                    <th>Роль</th>
+                    <th>Email</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,6 +57,8 @@
                     <tr>
                         <td>{{ row.username }}</td>
                         <td>{{ row.password }}</td>
+                        <td>{{ row.role }}</td>
+                        <td>{{ row.email }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
