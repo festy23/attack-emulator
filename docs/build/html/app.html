@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="ru" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>app.py Module &#8212; документация Attack Emulator 1.0</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    
+    <script src="_static/documentation_options.js?v=9ca2116e"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/translations.js?v=29b1f277"></script>
+    
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="prev" title="Modules" href="modules.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             accesskey="I">указатель</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Содержание модулей Python"
+             >модули</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="Modules"
+             accesskey="P">назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">документация Attack Emulator 1.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">app.py Module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-app">
+<span id="app-py-module"></span><h1>app.py Module<a class="headerlink" href="#module-app" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.attack">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#attack"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.attack" title="Link to this definition">¶</a></dt>
+<dd><p>Обработка выбора типа атаки.</p>
+<p>На основе введённого типа атаки перенаправляет на соответствующую страницу.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request.form</strong><strong>[</strong><strong>'attack_type'</strong><strong>]</strong> (<em>str</em>) – Тип атаки, выбранный пользователем. Возможные значения:
+- «SQL Injection»
+- «XSS»
+- «DDoS»</p>
+</dd>
+<dt class="field-even">Результат<span class="colon">:</span></dt>
+<dd class="field-even"><p>Перенаправление на страницу демонстрации атаки.</p>
+</dd>
+<dt class="field-odd">Тип результата<span class="colon">:</span></dt>
+<dd class="field-odd"><p>redirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.defense">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">defense</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#defense"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.defense" title="Link to this definition">¶</a></dt>
+<dd><p>Управление защитой.</p>
+<p>Включает или отключает защиту, а также перенаправляет на главную страницу.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request.form</strong><strong>[</strong><strong>'action'</strong><strong>]</strong> (<em>str</em>) – Действие для управления защитой (включить или отключить).</p></li>
+<li><p><strong>request.form</strong><strong>[</strong><strong>'defense_type'</strong><strong>]</strong> (<em>str</em>) – Тип защиты. Возможные значения:
+- «Rate Limiting»
+- «Prepared Statements»
+- «Input Data Filtering»</p></li>
+</ul>
+</dd>
+<dt class="field-even">Результат<span class="colon">:</span></dt>
+<dd class="field-even"><p>Перенаправление на главную страницу.</p>
+</dd>
+<dt class="field-odd">Тип результата<span class="colon">:</span></dt>
+<dd class="field-odd"><p>redirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.home">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#home"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.home" title="Link to this definition">¶</a></dt>
+<dd><p>Главная страница.</p>
+<p>Сбрасывает счётчик запросов для DDoS атаки.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Рендерит шаблон index.html.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.sql_demo">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">sql_demo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#sql_demo"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.sql_demo" title="Link to this definition">¶</a></dt>
+<dd><p>Демонстрация SQL-инъекций.</p>
+<p>Симулирует SQL-инъекцию с использованием фейковой базы данных и
+защищённых/не защищённых методов выполнения запросов.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request.form</strong><strong>[</strong><strong>'username'</strong><strong>]</strong> (<em>str</em>) – Имя пользователя для входа.</p></li>
+<li><p><strong>request.form</strong><strong>[</strong><strong>'password'</strong><strong>]</strong> (<em>str</em>) – Пароль для входа.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Результат<span class="colon">:</span></dt>
+<dd class="field-even"><p>Рендерит шаблон sql_demo.html с результатами демонстрации.</p>
+</dd>
+<dt class="field-odd">Тип результата<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Оглавление</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">app.py Module</a><ul>
+<li><a class="reference internal" href="#app.attack"><code class="docutils literal notranslate"><span class="pre">attack()</span></code></a></li>
+<li><a class="reference internal" href="#app.defense"><code class="docutils literal notranslate"><span class="pre">defense()</span></code></a></li>
+<li><a class="reference internal" href="#app.home"><code class="docutils literal notranslate"><span class="pre">home()</span></code></a></li>
+<li><a class="reference internal" href="#app.sql_demo"><code class="docutils literal notranslate"><span class="pre">sql_demo()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Предыдущий раздел</h4>
+    <p class="topless"><a href="modules.html"
+                          title="предыдущая глава">Modules</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>Эта страница</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/app.rst.txt"
+            rel="nofollow">Исходный текст</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             >указатель</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Содержание модулей Python"
+             >модули</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="Modules"
+             >назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">документация Attack Emulator 1.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">app.py Module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Авторские права 2024, Artur Ivanov.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    </div>
+  </body>
+</html>

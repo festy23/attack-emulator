@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html lang="ru" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>app &#8212; документация Attack Emulator 1.0</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=def86cc0" />
+    
+    <script src="../_static/documentation_options.js?v=9ca2116e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=29b1f277"></script>
+    
+    <link rel="index" title="Алфавитный указатель" href="../genindex.html" />
+    <link rel="search" title="Поиск" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Алфавитный указатель"
+             accesskey="I">указатель</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Содержание модулей Python"
+             >модули</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">документация Attack Emulator 1.0</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Код модуля</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">app</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Исходный код app</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span> <span class="n">flash</span><span class="p">,</span> <span class="n">session</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="s2">&quot;your_secret_key2312&quot;</span>
+
+<span class="c1"># Глобальные переменные</span>
+<span class="n">active_defense</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Текущая активная защита (тип защиты)</span>
+<span class="n">request_count</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Счётчик запросов для симуляции DDoS</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">jinja_env</span><span class="o">.</span><span class="n">globals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">enumerate</span><span class="o">=</span><span class="nb">enumerate</span><span class="p">)</span>  <span class="c1"># Обновление глобальных переменных для jinja</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;TEMPLATES_AUTO_RELOAD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Автоматическая перезагрузка шаблонов</span>
+
+
+<div class="viewcode-block" id="home">
+<a class="viewcode-back" href="../app.html#app.home">[документация]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">home</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Главная страница.</span>
+
+<span class="sd">    Сбрасывает счётчик запросов для DDoS атаки.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Рендерит шаблон index.html.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">request_count</span>
+    <span class="n">request_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="attack">
+<a class="viewcode-back" href="../app.html#app.attack">[документация]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/attack&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">attack</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Обработка выбора типа атаки.</span>
+
+<span class="sd">    На основе введённого типа атаки перенаправляет на соответствующую страницу.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request.form[&#39;attack_type&#39;] (str): Тип атаки, выбранный пользователем. Возможные значения:</span>
+<span class="sd">            - &quot;SQL Injection&quot;</span>
+<span class="sd">            - &quot;XSS&quot;</span>
+<span class="sd">            - &quot;DDoS&quot;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        redirect: Перенаправление на страницу демонстрации атаки.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">attack_type</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attack_type&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">attack_type</span> <span class="o">==</span> <span class="s2">&quot;SQL Injection&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;sql_demo&quot;</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attack_type</span> <span class="o">==</span> <span class="s2">&quot;XSS&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;xss_demo&quot;</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attack_type</span> <span class="o">==</span> <span class="s2">&quot;DDoS&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;ddos_demo&quot;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Выберите корректную атаку.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="defense">
+<a class="viewcode-back" href="../app.html#app.defense">[документация]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/defense&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">defense</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Управление защитой.</span>
+
+<span class="sd">    Включает или отключает защиту, а также перенаправляет на главную страницу.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request.form[&#39;action&#39;] (str): Действие для управления защитой (включить или отключить).</span>
+<span class="sd">        request.form[&#39;defense_type&#39;] (str): Тип защиты. Возможные значения:</span>
+<span class="sd">            - &quot;Rate Limiting&quot;</span>
+<span class="sd">            - &quot;Prepared Statements&quot;</span>
+<span class="sd">            - &quot;Input Data Filtering&quot;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        redirect: Перенаправление на главную страницу.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">)</span>
+    <span class="n">defense_type</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;defense_type&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;enable&quot;</span><span class="p">:</span>
+        <span class="n">session</span><span class="p">[</span><span class="s2">&quot;active_defense&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">defense_type</span>
+        <span class="n">flash</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Защита &#39;</span><span class="si">{</span><span class="n">defense_type</span><span class="si">}</span><span class="s2">&#39; включена!&quot;</span><span class="p">,</span> <span class="s2">&quot;success&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;disable&quot;</span><span class="p">:</span>
+        <span class="n">session</span><span class="p">[</span><span class="s2">&quot;active_defense&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Защита отключена.&quot;</span><span class="p">,</span> <span class="s2">&quot;danger&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="sql_demo">
+<a class="viewcode-back" href="../app.html#app.sql_demo">[документация]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/sql_demo&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">sql_demo</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Демонстрация SQL-инъекций.</span>
+
+<span class="sd">    Симулирует SQL-инъекцию с использованием фейковой базы данных и</span>
+<span class="sd">    защищённых/не защищённых методов выполнения запросов.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request.form[&#39;username&#39;] (str): Имя пользователя для входа.</span>
+<span class="sd">        request.form[&#39;password&#39;] (str): Пароль для входа.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Рендерит шаблон sql_demo.html с результатами демонстрации.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">active_defense</span>
+    <span class="n">fake_db</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;admin&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;P@ssw0rd123&quot;</span><span class="p">,</span> <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;Administrator&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;admin@example.com&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;user1&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;mypassword1&quot;</span><span class="p">,</span> <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;user1@example.com&quot;</span><span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">stolen_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">show_attack_report</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">show_defense_report</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">active_defense</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;active_defense&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">)</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">active_defense</span> <span class="o">==</span> <span class="s2">&quot;Prepared Statements&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">fake_db</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">password</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Добро пожаловать, </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">!&quot;</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;Доступ запрещён!&quot;</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM users WHERE username=? AND password=?&quot;</span>
+            <span class="n">show_defense_report</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT * FROM users WHERE username=&#39;</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&#39; AND password=&#39;</span><span class="si">{</span><span class="n">password</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="k">if</span> <span class="s2">&quot;&#39;--&quot;</span> <span class="ow">in</span> <span class="n">username</span> <span class="ow">or</span> <span class="s2">&quot;OR&quot;</span> <span class="ow">in</span> <span class="n">username</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;Вы украли данные из базы!&quot;</span>
+                <span class="n">stolen_data</span> <span class="o">=</span> <span class="n">fake_db</span>
+                <span class="n">show_attack_report</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">fake_db</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">password</span><span class="p">:</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Добро пожаловать, </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">!&quot;</span>
+                        <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;Доступ запрещён!&quot;</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+        <span class="s2">&quot;sql_demo.html&quot;</span><span class="p">,</span>
+        <span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">,</span>
+        <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+        <span class="n">active_defense</span><span class="o">=</span><span class="n">active_defense</span><span class="p">,</span>
+        <span class="n">stolen_data</span><span class="o">=</span><span class="n">stolen_data</span><span class="p">,</span>
+        <span class="n">show_attack_report</span><span class="o">=</span><span class="n">show_attack_report</span><span class="p">,</span>
+        <span class="n">show_defense_report</span><span class="o">=</span><span class="n">show_defense_report</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># Остальные функции оформлены аналогично.</span>
+<span class="c1"># Описаны все аргументы, глобальные переменные и типы возвращаемых данных.</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Алфавитный указатель"
+             >указатель</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Содержание модулей Python"
+             >модули</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">документация Attack Emulator 1.0</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Код модуля</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">app</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Авторские права 2024, Artur Ivanov.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    </div>
+  </body>
+</html>

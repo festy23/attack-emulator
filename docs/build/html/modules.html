@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html lang="ru" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Modules &#8212; документация Attack Emulator 1.0</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    
+    <script src="_static/documentation_options.js?v=9ca2116e"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/translations.js?v=29b1f277"></script>
+    
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="app.py Module" href="app.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             accesskey="I">указатель</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Содержание модулей Python"
+             >модули</a> |</li>
+        <li class="right" >
+          <a href="app.html" title="app.py Module"
+             accesskey="N">вперёд</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             accesskey="P">назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">документация Attack Emulator 1.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Modules</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="modules">
+<h1>Modules<a class="headerlink" href="#modules" title="Link to this heading">¶</a></h1>
+<p>Описание модулей проекта <strong>Attack Emulator</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>app.py</strong>
+Основной модуль приложения. Включает следующие маршруты:
+- <cite>/</cite> — главная страница.
+- <cite>/attack</cite> — выполнение атаки.
+- <cite>/defense</cite> — включение/отключение защиты.
+- <cite>/sql_demo</cite> — демонстрация SQL Injection.
+- <cite>/xss_demo</cite> — демонстрация XSS.
+- <cite>/ddos_demo</cite> — демонстрация DDoS.
+- <cite>/test</cite> — выполнение теста на знание атак и защит.
+- <cite>/attack_report</cite> — отчёт об атаке.
+- <cite>/defense_report</cite> — отчёт о защите.</p></li>
+<li><p><strong>test_routes.py</strong>
+Модуль тестирования. Использует <cite>pytest</cite> для проверки корректности маршрутов, обработки данных и предотвращения атак.</p></li>
+<li><p><strong>templates/</strong>
+Директория с HTML-шаблонами для приложения. Содержит файлы:
+- <cite>index.html</cite> — главная страница.
+- <cite>attack_report.html</cite> — отчёт об атаке.
+- <cite>defense_report.html</cite> — отчёт о защите.
+- <cite>sql_demo.html</cite> — страница демонстрации SQL Injection.
+- <cite>xss_demo.html</cite> — страница демонстрации XSS.
+- <cite>ddos_demo.html</cite> — страница демонстрации DDoS.
+- <cite>test.html</cite> — страница теста.</p></li>
+</ol>
+<ol class="arabic simple" start="5">
+<li><p><strong>requirements.txt</strong>
+Список зависимостей, необходимых для запуска приложения. Устанавливается командой:</p></li>
+</ol>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Предыдущий раздел</h4>
+    <p class="topless"><a href="usage.html"
+                          title="предыдущая глава">Usage</a></p>
+  </div>
+  <div>
+    <h4>Следующий раздел</h4>
+    <p class="topless"><a href="app.html"
+                          title="следующая глава">app.py Module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>Эта страница</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/modules.rst.txt"
+            rel="nofollow">Исходный текст</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             >указатель</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Содержание модулей Python"
+             >модули</a> |</li>
+        <li class="right" >
+          <a href="app.html" title="app.py Module"
+             >вперёд</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             >назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">документация Attack Emulator 1.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Modules</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Авторские права 2024, Artur Ivanov.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    </div>
+  </body>
+</html>
