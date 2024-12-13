@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Attack Emulator's documentation!
+Добро пожаловать в документацию проекта!
 ===========================================
 
 .. toctree::
@@ -16,11 +16,8 @@ Welcome to Attack Emulator's documentation!
    app
 
 
-
-
-Indices and tables
-==================
+Указатели и таблицы
+====================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

@@ -9,10 +9,10 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../src'))  # Укажите правильный путь к папке с app.py
 
-project = 'Attack Emulator'
-copyright = '2024, Artur Ivanov'
-author = 'Artur Ivanov'
-release = '1.1'
+project = 'Эмулятор атак на веб-приложение'
+copyright = '2024, Артур Иванов'
+author = 'Артур Иванов'
+release = '1.2'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -25,11 +25,11 @@ extensions = [
 
 templates_path = ['_templates']
 exclude_patterns = []
-
+html_use_modindex = False
 language = 'ru'
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'classic'
+html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']

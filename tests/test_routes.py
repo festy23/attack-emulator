@@ -41,8 +41,8 @@ def test_attack_report(client):
     response = client.get('/attack_report?attack_type=XSS')
     assert response.status_code == 200
     assert "Отчёт об атаке: XSS".encode('utf-8') in response.data
-    assert "Фильтрация данных".encode('utf-8') in response.data
-    assert "Экранирование пользовательских данных".encode('utf-8') in response.data
+    assert "Внедрение JavaScript-кода, выполняемого в браузере пользователя.".encode('utf-8') in response.data
+    assert "Кража данных или подмена интерфейса.".encode('utf-8') in response.data
 def test_defense_report(client):
     """Тестирует отчёт о защите."""
     response = client.get('/defense_report?defense_type=Prepared Statements')
@@ -58,19 +58,19 @@ def test_test_page(client):
 
 def test_test_submission(client):
     """Тестирует отправку ответов на вопросы /test."""
-    # Подготовка данных (ответы на вопросы)
+   
     answers = {
         'q0': "Перегрузка сервера",
-        'q1': "Prepared Statements",
+        'q1': 'Подготовленные запросы(Prepared Statements)',
         'q2': "Input Data Filtering",
         'q3': "10",
         'q4': "Rate Limiting"
     }
 
-    # Отправляем POST-запрос с ответами
+ 
     response = client.post('/test', data=answers)
     assert response.status_code == 200
-    assert "Ваш результат: 5/5".encode('utf-8') in response.data  # Проверяем корректность результата
+    assert "Ваш результат: 5/5".encode('utf-8') in response.data  
 
-    # Проверяем пояснения к первому вопросу
+
     assert "Основной целью DDoS-атаки является перегрузка сервера для нарушения его работы.".encode('utf-8') in response.data
