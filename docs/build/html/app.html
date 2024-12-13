@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app.py Module &mdash; документация Эмулятор атак на веб-приложение 1.2</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=0f221f1d"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=29b1f277"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="prev" title="Modules" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Эмулятор атак на веб-приложение
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Содержание:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">app.py Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#app.attack"><code class="docutils literal notranslate"><span class="pre">attack()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app.attack_report"><code class="docutils literal notranslate"><span class="pre">attack_report()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app.ddos_demo"><code class="docutils literal notranslate"><span class="pre">ddos_demo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app.defense"><code class="docutils literal notranslate"><span class="pre">defense()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app.defense_report"><code class="docutils literal notranslate"><span class="pre">defense_report()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app.home"><code class="docutils literal notranslate"><span class="pre">home()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app.sql_demo"><code class="docutils literal notranslate"><span class="pre">sql_demo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app.test"><code class="docutils literal notranslate"><span class="pre">test()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app.xss_demo"><code class="docutils literal notranslate"><span class="pre">xss_demo()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Эмулятор атак на веб-приложение</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">app.py Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/app.rst.txt" rel="nofollow"> Просмотреть исходный код страницы</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-app">
+<span id="app-py-module"></span><h1>app.py Module<a class="headerlink" href="#module-app" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.attack">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">attack</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#attack"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.attack" title="Link to this definition"></a></dt>
+<dd><p>Страница для выбора типа атаки.</p>
+<p>Перенаправляет на страницы с демонстрациями различных атак.</p>
+<dl class="simple">
+<dt>Аргументы формы:</dt><dd><dl class="simple">
+<dt>attack_type (str): Тип выбранной атаки. Возможные значения:</dt><dd><ul class="simple">
+<li><p>«SQL Injection»</p></li>
+<li><p>«XSS»</p></li>
+<li><p>«DDoS»</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Перенаправление на страницы с демонстрацией атак.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>redirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.attack_report">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">attack_report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#attack_report"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.attack_report" title="Link to this definition"></a></dt>
+<dd><p>Отчёт об атаке.</p>
+<p>Выводит отчёт об атаке, основанный на типе атаки, переданном в URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Рендерит шаблон attack_report.html с отчётом об атаке.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.ddos_demo">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">ddos_demo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#ddos_demo"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.ddos_demo" title="Link to this definition"></a></dt>
+<dd><p>Демонстрация DDoS-атаки.</p>
+<p>Имитация DDoS-атаки с контролем запросов.</p>
+<dl class="simple">
+<dt>Глобальные переменные:</dt><dd><p>request_count (int): Счётчик запросов.
+active_defense (str): Текущий активный метод защиты.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTML-шаблон с результатами демонстрации.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.defense">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">defense</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#defense"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.defense" title="Link to this definition"></a></dt>
+<dd><p>Управление защитой.</p>
+<p>Обрабатывает включение или отключение выбранного типа защиты.</p>
+<dl class="simple">
+<dt>Аргументы формы:</dt><dd><dl class="simple">
+<dt>action (str): Действие, которое необходимо выполнить. Возможные значения:</dt><dd><ul class="simple">
+<li><p>«enable»</p></li>
+<li><p>«disable»</p></li>
+</ul>
+</dd>
+<dt>defense_type (str): Тип включаемой защиты. Возможные значения:</dt><dd><ul class="simple">
+<li><p>«Rate limiting»</p></li>
+<li><p>«Prepared Statements»</p></li>
+<li><p>«Input Data Filtering»</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Глобальные переменные:</dt><dd><p>active_defense (str): Текущий активный метод защиты.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Перенаправление на главную страницу.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>redirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.defense_report">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">defense_report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#defense_report"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.defense_report" title="Link to this definition"></a></dt>
+<dd><p>Отчёт о защите.</p>
+<p>Выводит отчёт о защите, основанный на выбранном типе защиты.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Рендерит шаблон defense_report.html с отчётом о защите.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.home">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#home"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.home" title="Link to this definition"></a></dt>
+<dd><p>Главная страница.</p>
+<p>Сбрасывает счётчик запросов для DDoS атаки.</p>
+<dl class="simple">
+<dt>Глобальные переменные:</dt><dd><p>request_count (int): Счётчик запросов для симуляции DDoS.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Рендерит шаблон index.html.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.sql_demo">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">sql_demo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#sql_demo"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.sql_demo" title="Link to this definition"></a></dt>
+<dd><p>Демонстрация SQL-инъекций.</p>
+<p>Симулирует SQL-инъекцию с использованием фейковой базы данных и
+защищённых/не защищённых методов выполнения запросов.</p>
+<dl class="simple">
+<dt>Аргументы формы (POST):</dt><dd><p>username (str): Имя пользователя.
+password (str): Пароль пользователя.</p>
+</dd>
+<dt>Глобальные переменные:</dt><dd><p>active_defense (str): Текущий активный метод защиты.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Рендерит шаблон sql_demo.html с результатами.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.test">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#test"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.test" title="Link to this definition"></a></dt>
+<dd><p>Обработчик страницы теста на знание атак и методов защиты.</p>
+<p>Обеспечивает рендеринг страницы с тестом, который содержит вопросы
+о различных видах атак и защитных механизмах. Проверяет ответы пользователя
+и выводит итоговый результат.</p>
+<dl class="simple">
+<dt>Questions:</dt><dd><p>Вопросы теста с вариантами ответов, правильным ответом и пояснением:
+- «Что является основным последствием DDoS-атаки?»
+- «Какой метод защиты используется против SQL Injection?»
+- «Как работает защита от XSS?»
+- «Сколько запросов требуется для успешной DDoS-атаки (без защиты)?»
+- «Какой метод используется для ограничения количества запросов?»</p>
+</dd>
+<dt>Аргументы:</dt><dd><dl class="simple">
+<dt>request (werkzeug.local.LocalProxy): Flask объект запроса, содержащий данные</dt><dd><p>о методе (GET или POST) и предоставленные пользователем данные.</p>
+</dd>
+</dl>
+</dd>
+<dt>Возвращаемые значения:</dt><dd><dl class="simple">
+<dt>str: HTML-шаблон с результатами теста и пояснениями:</dt><dd><ul class="simple">
+<li><p>При методе GET: отображает вопросы теста.</p></li>
+<li><p>При методе POST: проверяет ответы пользователя и отображает результат.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Поведение:</dt><dd><ul class="simple">
+<li><p>Если метод запроса GET: отображает форму теста.</p></li>
+<li><p>Если метод запроса POST: обрабатывает ответы пользователя, подсчитывает
+количество правильных ответов и возвращает HTML-шаблон с итоговым результатом.</p></li>
+</ul>
+</dd>
+<dt>Примеры:</dt><dd><p>Пример запроса POST с правильным ответом:
+- Вопрос: «Что является основным последствием DDoS-атаки?»
+- Ответ пользователя: «Перегрузка сервера»
+- Итог: +1 к результату.</p>
+</dd>
+<dt>HTML-шаблон:</dt><dd><p>Использует шаблон <cite>test.html</cite>, который отображает:
+- Список вопросов.
+- Выбранные пользователем ответы (при наличии).
+- Итоговый результат (количество правильных ответов).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.xss_demo">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">xss_demo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#xss_demo"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#app.xss_demo" title="Link to this definition"></a></dt>
+<dd><p>Демонстрация защиты от XSS-атак.</p>
+<p>Симулирует атаку XSS с фильтрацией пользовательского ввода.</p>
+<dl class="simple">
+<dt>Аргументы формы (POST):</dt><dd><p>user_input (str): Пользовательский ввод, который будет отрендерен в шаблоне.</p>
+</dd>
+<dt>Глобальные переменные:</dt><dd><p>active_defense (str): Текущий активный метод защиты.</p>
+</dd>
+<dt>Возвращаемые значения:</dt><dd><p>str: HTML-шаблон с результатами демонстрации.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="modules.html" class="btn btn-neutral float-left" title="Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2024, Артур Иванов. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

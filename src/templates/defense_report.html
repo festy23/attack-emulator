@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ report.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container">
+    <h1>{{ report.title }}</h1>
+    <p>{{ report.description }}</p>
+
+    <h2>Пример работы защиты</h2>
+    <pre class="bg-light p-3">{{ report.example }}</pre>
+
+    <h2>Последствия</h2>
+    <p>{{ report.impact }}</p>
+
+    <h2>Как это работает</h2>
+    <ul>
+        {% for item in report.how_it_works %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="/" class="btn btn-primary mt-3">Вернуться на главную</a>
+</body>
+</html>
