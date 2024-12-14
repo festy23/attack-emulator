@@ -330,23 +330,23 @@ def ddos_demo():
     """
     global request_count
     active_defense = session.get('active_defense',None) 
-    print(f"Active Defense: {active_defense}, Request Count: {request_count}") 
+ 
     show_attack_report = False
     show_defense_report = False
     attack_successful=None
 
     if request.method == 'POST':
         request_count += 1  
-        print(f"Request Count after POST: {request_count}") 
+       
     
     if active_defense == "Rate Limiting" and request_count >= 10:
        attack_successful = False
        show_defense_report = True
-       print('DEFEEEFEEFFNs')
+
     elif request_count >= 10:
         attack_successful = True
         show_attack_report = True
-        print ('ATTACKADDOOD')
+      
     else:
         attack_successful = None
 
