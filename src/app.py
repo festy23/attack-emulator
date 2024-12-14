@@ -164,7 +164,7 @@ def sql_demo():
         else:
            
             query = f"SELECT * FROM users WHERE username='{username}' AND password='{password}'"
-            if "'--" in username or "OR" in username:
+            if "'--" in username:
                 result = "Вы украли данные из базы!"
                 stolen_data = fake_db
                 show_attack_report = True  
